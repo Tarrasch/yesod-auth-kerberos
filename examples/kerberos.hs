@@ -17,13 +17,12 @@ mkYesod "Kerberos" [parseRoutes|
 |]
 
 getRootR :: Handler ()
-getRootR = redirect RedirectTemporary $ AuthR LoginR
+getRootR = redirect $ AuthR LoginR
 
 getAfterLoginR :: Handler RepHtml
 getAfterLoginR = defaultLayout $ return ()
 
 instance Yesod Kerberos where
-    approot _ = "http://localhost:3000"
 
 instance YesodAuth Kerberos where
     type AuthId Kerberos = String
@@ -32,7 +31,7 @@ instance YesodAuth Kerberos where
     getAuthId _ = do
         liftIO $ putStrLn "getAuthId"
         return $ Just "foo"
-    authPlugins = [authKerberos]
+    authPlugins = const [authKerberos]
 
 instance RenderMessage Kerberos FormMessage where
     renderMessage _ _ = defaultFormMessage
