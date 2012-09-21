@@ -36,4 +36,4 @@ library
 
 source-repository head
   type:     git
-  location: https://github.com/yesodweb/yesod
+  location: https://github.com/Tarrasch/yesod-auth-kerberos
