@@ -33,9 +33,7 @@ import Web.Authenticate.Kerberos
 import Data.Text (Text)
 import qualified Data.Text as T
 import Text.Hamlet
-import Yesod.Handler
-import Yesod.Widget
-import Control.Monad.IO.Class (liftIO)
+import Yesod.Core
 import Yesod.Form
 import Control.Applicative ((<$>), (<*>))
 
@@ -91,25 +89,24 @@ authKerberos :: YesodAuth m => AuthPlugin m
 authKerberos = genericAuthKerberos defaultKerberosConfig
 
 -- | Handle the login form
-postLoginR :: (YesodAuth y) => KerberosConfig -> GHandler Auth y ()
+postLoginR :: (YesodAuth master) => KerberosConfig -> HandlerT Auth (HandlerT master IO) ()
 postLoginR config = do
-    (mu,mp) <- runInputPost $ (,)
+    (mu,mp) <- lift $ runInputPost $ (,)
         <$> iopt textField "username"
         <*> iopt textField "password"
 
     let errorMessage (message :: Text) = do
-        setMessage [QQ(shamlet)|$newline never
+        lift $ setMessage [QQ(shamlet)|$newline never
             Error: #{message}
           |]
-        toMaster <- getRouteToMaster
-        redirect $ toMaster LoginR
+        redirect LoginR
 
     case (mu,mp) of
         (Nothing, _      ) -> do
-            mr <- getMessageRender
+            mr <- lift getMessageRender
             errorMessage $ mr PleaseProvideUsername
         (_      , Nothing) -> do
-            mr <- getMessageRender
+            mr <- lift getMessageRender
             errorMessage $ mr PleaseProvidePassword
         (Just u , Just p ) -> do
           result <- liftIO $ loginKerberos (usernameModifier config u) p
@@ -120,6 +117,6 @@ postLoginR config = do
                       , credsPlugin = "Kerberos"
                       , credsExtra  = []
                       }
-                setCreds True creds
+                lift $ setCreds True creds
             kerberosError -> errorMessage (T.pack $ show kerberosError)
 
