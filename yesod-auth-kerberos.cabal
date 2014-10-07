@@ -1,5 +1,5 @@
 name:            yesod-auth-kerberos
-version:         1.4.0
+version:         1.4.1
 license:         BSD3
 license-file:    LICENSE
 author:          Arash Rouhani
