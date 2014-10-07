@@ -10,18 +10,11 @@ stability:       Stable
 cabal-version:   >= 1.6.0
 build-type:      Simple
 homepage:        http://www.yesodweb.com/
-extra-source-files: include/qq.h
 description:     Kerberos Authentication for Yesod.
 
-flag ghc7
-
 library
-    if flag(ghc7)
-        build-depends:   base                >= 4.3      && < 5
-        cpp-options:     -DGHC7
-    else
-        build-depends:   base                >= 4        && < 4.3
-    build-depends:   authenticate-kerberos   >= 1.0       && < 1.1
+    build-depends:   base                    >= 4.3       && < 5
+                   , authenticate-kerberos   >= 1.0       && < 1.1
                    , yesod-core              >= 1.4       && < 2.0
                    , yesod-auth              >= 1.4       && < 2.0
                    , yesod-form              >= 1.4       && < 2.0
@@ -32,7 +25,6 @@ library
 
     exposed-modules: Yesod.Auth.Kerberos
     ghc-options:     -Wall
-    include-dirs: include
 
 source-repository head
   type:     git

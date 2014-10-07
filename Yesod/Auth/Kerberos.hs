@@ -52,7 +52,7 @@ defaultKerberosConfig = KerberosConfig id id
 -- | A configurable version of 'authKerberos'
 genericAuthKerberos :: YesodAuth m => KerberosConfig -> AuthPlugin m
 genericAuthKerberos config = AuthPlugin "kerberos" dispatch $ \tm -> toWidget
-    [QQ(hamlet)|$newline never
+    [hamlet|$newline never
     <div id="header">
         <h1>Login
 
@@ -96,7 +96,7 @@ postLoginR config = do
         <*> iopt textField "password"
 
     let errorMessage (message :: Text) = do
-        lift $ setMessage [QQ(shamlet)|$newline never
+        lift $ setMessage [shamlet|$newline never
             Error: #{message}
           |]
         redirect LoginR
