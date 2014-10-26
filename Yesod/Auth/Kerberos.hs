@@ -25,8 +25,6 @@ module Yesod.Auth.Kerberos
       defaultKerberosConfig
     ) where
 
-#include "qq.h"
-
 import Yesod.Auth
 import Yesod.Auth.Message
 import Web.Authenticate.Kerberos
