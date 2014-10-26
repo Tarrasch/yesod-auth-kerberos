@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Tarrasch/yesod-auth-kerberos.svg?branch=master)](https://travis-ci.org/Tarrasch/yesod-auth-kerberos)
+
 ## Kerberos authentication for yesod
 
 To try this out *after* installing:
